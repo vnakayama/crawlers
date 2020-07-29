@@ -3,7 +3,7 @@ created by nakayama
 github: vnakayama
 e-mail: nakayama@ufrj.br
 
-to-do: add category automatically, append ACC and others, declare variables and then append
+to-do: add category automatically, append ACC and others
 """
 
 ## Standard Library
@@ -49,7 +49,7 @@ for i in range(2,duracao*2,2):
             code = disciplina.find_elements_by_tag_name('td')[0].text
             workload = int(disciplina.find_elements_by_tag_name('td')[3].text)+int(disciplina.find_elements_by_tag_name('td')[4].text)+int(disciplina.find_elements_by_tag_name('td')[5].text)
             requirements = disciplina.find_elements_by_tag_name('td')[6].text
-            
+
             require = list(set(pattern.findall(requirements)))
 
             disc = {
@@ -72,7 +72,7 @@ for i in range(2,duracao*2,2):
             code = disciplina.find_elements_by_tag_name('td')[0].text
             workload = int(disciplina.find_elements_by_tag_name('td')[3].text)+int(disciplina.find_elements_by_tag_name('td')[4].text)+int(disciplina.find_elements_by_tag_name('td')[5].text)
             requirements = disciplina.find_elements_by_tag_name('td')[6].text
-            
+
             require = list(set(pattern.findall(requirements)))
 
             disc = {

@@ -3,9 +3,10 @@ created by nakayama
 github: vnakayama
 e-mail: nakayama@ufrj.br
 """
-
-############# imports
+## Standard Library
 import re
+
+## Third-Party
 import scrapy
 import requests
 from bs4 import BeautifulSoup

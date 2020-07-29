@@ -50,11 +50,11 @@ for i in range(2,duracao*2,2):
             workload = int(disciplina.find_elements_by_tag_name('td')[3].text)+int(disciplina.find_elements_by_tag_name('td')[4].text)+int(disciplina.find_elements_by_tag_name('td')[5].text)
             requirements = disciplina.find_elements_by_tag_name('td')[6].text
             
-            require = pattern.findall(requirements)
+            require = list(set(pattern.findall(requirements)))
 
             disc = {
                 'name': name,
-                'credits': credits,
+                'credits': int(credits),
                 'code': code,
                 'semester': semester,
                 'workload': workload,
@@ -73,11 +73,11 @@ for i in range(2,duracao*2,2):
             workload = int(disciplina.find_elements_by_tag_name('td')[3].text)+int(disciplina.find_elements_by_tag_name('td')[4].text)+int(disciplina.find_elements_by_tag_name('td')[5].text)
             requirements = disciplina.find_elements_by_tag_name('td')[6].text
             
-            require = pattern.findall(requirements)
+            require = list(set(pattern.findall(requirements)))
 
             disc = {
                 'name': name,
-                'credits': credits,
+                'credits': int(credits),
                 'code': code,
                 'semester': semester,
                 'workload': workload,

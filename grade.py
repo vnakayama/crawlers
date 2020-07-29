@@ -34,18 +34,38 @@ driver.get('https://siga.ufrj.br/sira/repositorio-curriculo/distribuicoes/7AC10A
 duracao = int(driver.find_element_by_xpath('/html/body/table/tbody/tr[1]/td/table/tbody/tr/td/table/tbody/tr[4]/td[1]/table/tbody/tr[3]/td[2]').text[0])
 for i in range(2,duracao*2,2):
     periodo = driver.find_element_by_xpath('/html/body/table/tbody/tr['+str(i)+']/td/table/tbody/tr/td/table/tbody[2]')
-    semester = i/2
+    semester = int(i/2)
     disciplinas1 = periodo.find_elements_by_class_name('tableBodyBlue1')
     disciplinas2 = periodo.find_elements_by_class_name('tableBodyBlue2')
     for disciplina in disciplinas1:
         try:
-            disc = '{name:"'+str(disciplina.find_elements_by_tag_name('td')[1].text)+'",credits:'+str(disciplina.find_elements_by_tag_name('td')[2].text)+',code:"'+str(disciplina.find_elements_by_tag_name('td')[0].text)+'",semester:'+str(i/2)+',workload:'+str(int(disciplina.find_elements_by_tag_name('td')[3].text)+int(disciplina.find_elements_by_tag_name('td')[4].text)+int(disciplina.find_elements_by_tag_name('td')[5].text))+',requirements:'+str([disciplina.find_elements_by_tag_name('td')[6].text])+'}'
+            name = disciplina.find_elements_by_tag_name('td')[1].text
+            credits = disciplina.find_elements_by_tag_name('td')[2].text[0]
+            code = disciplina.find_elements_by_tag_name('td')[0].text
+            workload = int(disciplina.find_elements_by_tag_name('td')[3].text)+int(disciplina.find_elements_by_tag_name('td')[4].text)+int(disciplina.find_elements_by_tag_name('td')[5].text)
+            requirements = disciplina.find_elements_by_tag_name('td')[6].text
+            require = []
+            pattern = re.compile('([A-Z])([A-Z])([A-Z])\d\d\d')
+            for requirement in requirements.split(' '):
+                if pattern.match(requirement):
+                    require.append(str(requirement))
+            disc = '{name:"'+str(name)+'",credits:'+str(credits)+',code:"'+str(code)+'",semester:'+str(semester)+',workload:'+str(workload)+',requirements:'+str(require)+'}'
             disciplinas.write(disc+','+'\n')
         except:
             pass
     for disciplina in disciplinas2:
         try:
-            disc = '{name:"'+str(disciplina.find_elements_by_tag_name('td')[1].text)+'",credits:'+str(disciplina.find_elements_by_tag_name('td')[2].text)+',code:"'+str(disciplina.find_elements_by_tag_name('td')[0].text)+'",semester:'+str(i/2)+',workload:'+str(int(disciplina.find_elements_by_tag_name('td')[3].text)+int(disciplina.find_elements_by_tag_name('td')[4].text)+int(disciplina.find_elements_by_tag_name('td')[5].text))+',requirements:'+str([disciplina.find_elements_by_tag_name('td')[6].text])+'}'
+            name = disciplina.find_elements_by_tag_name('td')[1].text
+            credits = disciplina.find_elements_by_tag_name('td')[2].text[0]
+            code = disciplina.find_elements_by_tag_name('td')[0].text
+            workload = int(disciplina.find_elements_by_tag_name('td')[3].text)+int(disciplina.find_elements_by_tag_name('td')[4].text)+int(disciplina.find_elements_by_tag_name('td')[5].text)
+            requirements = disciplina.find_elements_by_tag_name('td')[6].text
+            require = []
+            pattern = re.compile('([A-Z])([A-Z])([A-Z])\d\d\d')
+            for requirement in requirements.split(' '):
+                if pattern.match(requirement):
+                    require.append(str(requirement))
+            disc = '{name:"'+str(name)+'",credits:'+str(credits)+',code:"'+str(code)+'",semester:'+str(semester)+',workload:'+str(workload)+',requirements:'+str(require)+'}'
             disciplinas.write(disc+','+'\n')
         except:
             pass

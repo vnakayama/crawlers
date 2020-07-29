@@ -9,6 +9,7 @@ to-do: add category automatically, append ACC and others, declare variables and 
 ## Standard Library
 import re
 import os
+import json
 
 ## Third Party
 import requests
@@ -22,8 +23,6 @@ options.headless = True
 driver = webdriver.Firefox(options=options)
 # driver.get(url)
 
-disciplinas = open(os.path.join('json', 'disciplinas2.txt'),'w', encoding="utf-8")
-
 astro = [
     'https://siga.ufrj.br/sira/repositorio-curriculo/distribuicoes/761658BA-92A4-F79F-6268-CA716A32D813.html',
     'https://siga.ufrj.br/sira/repositorio-curriculo/distribuicoes/7AC10A59-92A4-F79B-1E8E-D192798C6B4B.html'
@@ -31,6 +30,11 @@ astro = [
 
 # discs = list()
 driver.get('https://siga.ufrj.br/sira/repositorio-curriculo/distribuicoes/7AC10A59-92A4-F79B-1E8E-D192798C6B4B.html')
+
+
+disciplinas = []
+
+pattern = re.compile(r'([A-Z])([A-Z])([A-Z])\d\d\d')
 
 duracao = int(driver.find_element_by_xpath('/html/body/table/tbody/tr[1]/td/table/tbody/tr/td/table/tbody/tr[4]/td[1]/table/tbody/tr[3]/td[2]').text[0])
 for i in range(2,duracao*2,2):
@@ -46,14 +50,23 @@ for i in range(2,duracao*2,2):
             workload = int(disciplina.find_elements_by_tag_name('td')[3].text)+int(disciplina.find_elements_by_tag_name('td')[4].text)+int(disciplina.find_elements_by_tag_name('td')[5].text)
             requirements = disciplina.find_elements_by_tag_name('td')[6].text
             require = []
-            pattern = re.compile('([A-Z])([A-Z])([A-Z])\d\d\d')
             for requirement in requirements.split(' '):
                 if pattern.match(requirement):
                     require.append(str(requirement))
-            disc = '{name:"'+str(name)+'",credits:'+str(credits)+',code:"'+str(code)+'",semester:'+str(semester)+',workload:'+str(workload)+',requirements:'+str(require)+'}'
-            disciplinas.write(disc+','+'\n')
+            
+            disc = {
+                'name': name,
+                'credits': credits,
+                'code': code,
+                'semester': semester,
+                'workload': workload,
+                'requirements': require,
+            }
+
+            disciplinas.append(disc)
         except:
             pass
+
     for disciplina in disciplinas2:
         try:
             name = disciplina.find_elements_by_tag_name('td')[1].text
@@ -62,13 +75,24 @@ for i in range(2,duracao*2,2):
             workload = int(disciplina.find_elements_by_tag_name('td')[3].text)+int(disciplina.find_elements_by_tag_name('td')[4].text)+int(disciplina.find_elements_by_tag_name('td')[5].text)
             requirements = disciplina.find_elements_by_tag_name('td')[6].text
             require = []
-            pattern = re.compile('([A-Z])([A-Z])([A-Z])\d\d\d')
             for requirement in requirements.split(' '):
                 if pattern.match(requirement):
                     require.append(str(requirement))
-            disc = '{name:"'+str(name)+'",credits:'+str(credits)+',code:"'+str(code)+'",semester:'+str(semester)+',workload:'+str(workload)+',requirements:'+str(require)+'}'
-            disciplinas.write(disc+','+'\n')
+
+            disc = {
+                'name': name,
+                'credits': credits,
+                'code': code,
+                'semester': semester,
+                'workload': workload,
+                'requirements': require,
+            }
+
+            disciplinas.append(disc)
         except:
             pass
 
 driver.close()
+
+with open(os.path.join('json', 'disciplinas2.json'),'w', encoding="utf-8") as file:
+    json.dump(disciplinas, file)

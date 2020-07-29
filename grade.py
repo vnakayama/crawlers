@@ -34,7 +34,7 @@ driver.get('https://siga.ufrj.br/sira/repositorio-curriculo/distribuicoes/7AC10A
 
 disciplinas = []
 
-pattern = re.compile(r'([A-Z])([A-Z])([A-Z])\d\d\d')
+pattern = re.compile(r'([A-Z]{3}[0-9]{3}|[A-Z]{4}[0-9]{2})', re.MULTILINE)
 
 duracao = int(driver.find_element_by_xpath('/html/body/table/tbody/tr[1]/td/table/tbody/tr/td/table/tbody/tr[4]/td[1]/table/tbody/tr[3]/td[2]').text[0])
 for i in range(2,duracao*2,2):
@@ -49,11 +49,9 @@ for i in range(2,duracao*2,2):
             code = disciplina.find_elements_by_tag_name('td')[0].text
             workload = int(disciplina.find_elements_by_tag_name('td')[3].text)+int(disciplina.find_elements_by_tag_name('td')[4].text)+int(disciplina.find_elements_by_tag_name('td')[5].text)
             requirements = disciplina.find_elements_by_tag_name('td')[6].text
-            require = []
-            for requirement in requirements.split(' '):
-                if pattern.match(requirement):
-                    require.append(str(requirement))
             
+            require = pattern.findall(requirements)
+
             disc = {
                 'name': name,
                 'credits': credits,
@@ -74,10 +72,8 @@ for i in range(2,duracao*2,2):
             code = disciplina.find_elements_by_tag_name('td')[0].text
             workload = int(disciplina.find_elements_by_tag_name('td')[3].text)+int(disciplina.find_elements_by_tag_name('td')[4].text)+int(disciplina.find_elements_by_tag_name('td')[5].text)
             requirements = disciplina.find_elements_by_tag_name('td')[6].text
-            require = []
-            for requirement in requirements.split(' '):
-                if pattern.match(requirement):
-                    require.append(str(requirement))
+            
+            require = pattern.findall(requirements)
 
             disc = {
                 'name': name,

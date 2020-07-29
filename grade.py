@@ -6,22 +6,23 @@ e-mail: nakayama@ufrj.br
 to-do: add category automatically, append ACC and others, declare variables and then append
 """
 
-############# imports
+## Standard Library
 import re
-import scrapy
+import os
+
+## Third Party
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 import pandas as pd
 
-############# code
-
 options = Options()
 options.headless = True
 driver = webdriver.Firefox(options=options)
 # driver.get(url)
-disciplinas = open('disciplinas2.txt','w')
+
+disciplinas = open(os.path.join('json', 'disciplinas2.txt'),'w', encoding="utf-8")
 
 astro = [
     'https://siga.ufrj.br/sira/repositorio-curriculo/distribuicoes/761658BA-92A4-F79F-6268-CA716A32D813.html',
